@@ -1,1069 +1,1432 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Problem Solving Summer Camp 2026 | ICPC OTU Community</title>
-    <meta name="description" content="معسكر صيفي لحل المشكلات البرمجية - مجتمع ICPC بجامعة أكتوبر التكنولوجية">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="معسكر صيفي لحل المشكلات البرمجية - مجتمع ICPC بجامعة أكتوبر التكنولوجية" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        dark: { 950:'#05050A', 900:'#0A0A10', 800:'#0E0E16', 700:'#18181F', 600:'#1E1E2A' },
-                        gold: { 400:'#FDE047', 500:'#EAB308', 600:'#CA8A04', 700:'#A16207' }
+                        dark: { 950: '#05050A', 900: '#0A0A10', 800: '#0E0E16', 700: '#18181F', 600: '#1E1E2A' },
+                        gold: { 400: '#FDE047', 500: '#EAB308', 600: '#CA8A04', 700: '#A16207' }
                     },
-                    fontFamily: { cairo:['Cairo','sans-serif'], mono:['JetBrains Mono','monospace'] }
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }
                 }
             }
         }
     </script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Cairo',sans-serif;background:#05050A;color:#fff;overflow-x:hidden}
-        ::-webkit-scrollbar{width:5px}
-        ::-webkit-scrollbar-track{background:#05050A}
-        ::-webkit-scrollbar-thumb{background:#EAB308;border-radius:3px}
-        html{scroll-behavior:smooth}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #05050A;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05050A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #EAB308;
+            border-radius: 3px;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
 
-        #scrollProgress{position:fixed;top:0;left:0;right:0;height:3px;z-index:9999}
-        #scrollProgress .bar{height:100%;width:0;background:linear-gradient(90deg,#EAB308,#FDE047);transition:width .1s linear;border-radius:0 2px 2px 0}
+        #scrollProgress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            z-index: 9999;
+        }
+        #scrollProgress .bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #EAB308, #FDE047);
+            transition: width .1s linear;
+            border-radius: 0 2px 2px 0;
+        }
 
-        #matrixCanvas{position:absolute;inset:0;z-index:0;opacity:.05}
-        @media(max-width:768px){#matrixCanvas{display:none}}
+        #matrixCanvas {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            opacity: .05;
+        }
+        @media (max-width:768px) {
+            #matrixCanvas {
+                display: none;
+            }
+        }
 
-        .reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.16,1,.3,1)}
-        .reveal.revealed{opacity:1;transform:translateY(0)}
-        .reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}.reveal-d4{transition-delay:.4s}.reveal-d5{transition-delay:.5s}
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all .8s cubic-bezier(.16, 1, .3, 1);
+        }
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-d1 {
+            transition-delay: .1s;
+        }
+        .reveal-d2 {
+            transition-delay: .2s;
+        }
+        .reveal-d3 {
+            transition-delay: .3s;
+        }
+        .reveal-d4 {
+            transition-delay: .4s;
+        }
+        .reveal-d5 {
+            transition-delay: .5s;
+        }
 
-        .typing-cursor{display:inline-block;width:3px;height:1em;background:#EAB308;margin-right:4px;animation:blink .8s infinite;vertical-align:text-bottom}
-        @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background: #EAB308;
+            margin-right: 4px;
+            animation: blink .8s infinite;
+            vertical-align: text-bottom;
+        }
+        @keyframes blink {
+            0%,
+            50% {
+                opacity: 1;
+            }
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
 
-        .gradient-text{background:linear-gradient(135deg,#fff 0%,#EAB308 50%,#FDE047 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .gradient-text-gold{background:linear-gradient(135deg,#FDE047 0%,#EAB308 50%,#CA8A04 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #EAB308 50%, #FDE047 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-text-gold {
+            background: linear-gradient(135deg, #FDE047 0%, #EAB308 50%, #CA8A04 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-        .glow-card{position:relative;background:#0A0A10;border:1px solid rgba(255,255,255,.06);border-radius:16px;transition:all .5s cubic-bezier(.16,1,.3,1)}
-        .glow-card:hover{transform:translateY(-4px);border-color:rgba(234,179,8,.2);box-shadow:0 20px 40px -15px rgba(234,179,8,.12)}
+        .glow-card {
+            position: relative;
+            background: #0A0A10;
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: 16px;
+            transition: all .5s cubic-bezier(.16, 1, .3, 1);
+        }
+        .glow-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(234, 179, 8, .2);
+            box-shadow: 0 20px 40px -15px rgba(234, 179, 8, .12);
+        }
 
-        .particle{position:absolute;width:3px;height:3px;background:#EAB308;border-radius:50%;opacity:0;animation:fp 20s infinite ease-in-out}
-        @keyframes fp{0%{opacity:0;transform:translateY(0) translateX(0)}10%{opacity:.3}90%{opacity:.3}100%{opacity:0;transform:translateY(-400px) translateX(80px)}}
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #EAB308;
+            border-radius: 50%;
+            opacity: 0;
+            animation: fp 20s infinite ease-in-out;
+        }
+        @keyframes fp {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0);
+            }
+            10% {
+                opacity: .3;
+            }
+            90% {
+                opacity: .3;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-400px) translateX(80px);
+            }
+        }
 
-        .scroll-ind{animation:sb 2s infinite}
-        @keyframes sb{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+        .scroll-ind {
+            animation: sb 2s infinite;
+        }
+        @keyframes sb {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
 
-        .nav-link{position:relative}
-        .nav-link::after{content:'';position:absolute;bottom:-4px;right:0;left:0;height:2px;background:#EAB308;transform:scaleX(0);transition:transform .3s;transform-origin:right}
-        .nav-link.active::after{transform:scaleX(1)}
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            left: 0;
+            height: 2px;
+            background: #EAB308;
+            transform: scaleX(0);
+            transition: transform .3s;
+            transform-origin: right;
+        }
+        .nav-link.active::after {
+            transform: scaleX(1);
+        }
 
-        .mobile-menu{transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
-        .mobile-menu.open{transform:translateX(0)}
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform .4s cubic-bezier(.16, 1, .3, 1);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
 
-        .stat-number{font-variant-numeric:tabular-nums}
+        .stat-number {
+            font-variant-numeric: tabular-nums;
+        }
 
-        .badge-pulse{animation:pg 2s infinite}
-        @keyframes pg{0%,100%{box-shadow:0 0 0 0 rgba(234,179,8,.4)}50%{box-shadow:0 0 0 8px rgba(234,179,8,0)}}
+        .badge-pulse {
+            animation: pg 2s infinite;
+        }
+        @keyframes pg {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(234, 179, 8, .4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(234, 179, 8, 0);
+            }
+        }
 
-        .accordion-content{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1)}
-        .accordion-content.open{max-height:500px}
-        .accordion-icon{transition:transform .3s}
-        .accordion-icon.rotated{transform:rotate(180deg)}
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .5s cubic-bezier(.16, 1, .3, 1);
+        }
+        .accordion-content.open {
+            max-height: 800px;
+        }
+        .accordion-icon {
+            transition: transform .3s;
+        }
+        .accordion-icon.rotated {
+            transform: rotate(180deg);
+        }
 
-        .gallery-item{overflow:hidden;border-radius:12px;position:relative}
-        .gallery-item img{transition:transform .7s cubic-bezier(.16,1,.3,1)}
-        .gallery-item:hover img{transform:scale(1.08)}
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 12px;
+            position: relative;
+        }
+        .gallery-item img {
+            transition: transform .7s cubic-bezier(.16, 1, .3, 1);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
 
-        #backToTop{opacity:0;transform:translateY(20px);transition:all .3s;pointer-events:none}
-        #backToTop.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+        #backToTop {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all .3s;
+            pointer-events: none;
+        }
+        #backToTop.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
 
-        .hero-content>*{opacity:0;transform:translateY(25px);animation:hi .8s forwards}
-        .hero-content>*:nth-child(1){animation-delay:.2s}
-        .hero-content>*:nth-child(2){animation-delay:.4s}
-        .hero-content>*:nth-child(3){animation-delay:.6s}
-        .hero-content>*:nth-child(4){animation-delay:.8s}
-        @keyframes hi{to{opacity:1;transform:translateY(0)}}
+        .hero-content>* {
+            opacity: 0;
+            transform: translateY(25px);
+            animation: hi .8s forwards;
+        }
+        .hero-content>*:nth-child(1) {
+            animation-delay: .2s;
+        }
+        .hero-content>*:nth-child(2) {
+            animation-delay: .4s;
+        }
+        .hero-content>*:nth-child(3) {
+            animation-delay: .6s;
+        }
+        .hero-content>*:nth-child(4) {
+            animation-delay: .8s;
+        }
+        @keyframes hi {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        .section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,.15),transparent)}
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(234, 179, 8, .15), transparent);
+        }
 
-        /* Rank Cards */
-        .rank-card{border-radius:16px;padding:20px;transition:all .4s;position:relative;overflow:hidden}
-        .rank-card::before{content:'';position:absolute;inset:0;border-radius:16px;padding:1px;background:linear-gradient(135deg,rgba(234,179,8,.2),transparent,rgba(234,179,8,.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
-        .rank-card:hover{transform:translateX(-4px)}
+        .rank-card {
+            border-radius: 16px;
+            padding: 20px;
+            transition: all .4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .rank-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(234, 179, 8, .2), transparent, rgba(234, 179, 8, .1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .rank-card:hover {
+            transform: translateX(-4px);
+        }
 
-        /* Week Page */
-        #weekPage{display:none}
-        #weekPage.active{display:block}
-        #mainPage.hidden-page{display:none}
+        #weekPage {
+            display: none;
+        }
+        #weekPage.active {
+            display: block;
+        }
+        #mainPage.hidden-page {
+            display: none;
+        }
 
-        .resource-icon{transition:all .3s}
-        .glow-card:hover .resource-icon{color:#EAB308;transform:scale(1.1)}
+        .resource-icon {
+            transition: all .3s;
+        }
+        .glow-card:hover .resource-icon {
+            color: #EAB308;
+            transform: scale(1.1);
+        }
 
-        .empty-float{animation:ef 3s ease-in-out infinite}
-        @keyframes ef{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .empty-float {
+            animation: ef 3s ease-in-out infinite;
+        }
+        @keyframes ef {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
 
-        /* Hamburger */
-        .hamburger-line{display:block;width:22px;height:2px;background:#fff;border-radius:1px;transition:all .3s cubic-bezier(.16,1,.3,1)}
-        .hamburger.active .hamburger-line:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-        .hamburger.active .hamburger-line:nth-child(2){opacity:0;transform:scaleX(0)}
-        .hamburger.active .hamburger-line:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+        .hamburger-line {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
+            transition: all .3s cubic-bezier(.16, 1, .3, 1);
+        }
+        .hamburger.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
 
-        /* Journey Map Styles */
-        .journey-node{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:2;flex-shrink:0;transition:all .3s}
-        @media(min-width:640px){.journey-node{width:56px;height:56px;font-size:22px}}
-        .journey-done{background:#EAB308;color:#05050A;box-shadow:0 0 15px rgba(234,179,8,.3)}
-        .journey-current{background:#0A0A10;border:2px solid #EAB308;color:#EAB308;animation:pg 2s infinite}
-        .journey-locked{background:#18181F;border:1px solid rgba(255,255,255,.05);color:#3F3F46}
-        .journey-line{flex:1;height:4px;background:rgba(255,255,255,.08);position:relative;border-radius:2px}
-        .journey-line .fill{position:absolute;inset:0;background:#EAB308;border-radius:2px;width:100%}
-        .journey-line.locked .fill{width:0}
+        .journey-node {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            z-index: 2;
+            flex-shrink: 0;
+            transition: all .3s;
+        }
+        @media (min-width:640px) {
+            .journey-node {
+                width: 56px;
+                height: 56px;
+                font-size: 22px;
+            }
+        }
+        .journey-done {
+            background: #EAB308;
+            color: #05050A;
+            box-shadow: 0 0 15px rgba(234, 179, 8, .3);
+        }
+        .journey-current {
+            background: #0A0A10;
+            border: 2px solid #EAB308;
+            color: #EAB308;
+            animation: pg 2s infinite;
+        }
+        .journey-locked {
+            background: #18181F;
+            border: 1px solid rgba(255, 255, 255, .05);
+            color: #3F3F46;
+        }
+        .journey-line {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, .08);
+            position: relative;
+            border-radius: 2px;
+        }
+        .journey-line .fill {
+            position: absolute;
+            inset: 0;
+            background: #EAB308;
+            border-radius: 2px;
+            width: 100%;
+        }
+        .journey-line.locked .fill {
+            width: 0;
+        }
+
+        .topic-tag {
+            transition: all .2s;
+        }
+        .topic-tag:hover {
+            background: rgba(234, 179, 8, .15);
+            color: #FDE047;
+        }
     </style>
 </head>
 <body>
 
-<!-- Scroll Progress -->
-<div id="scrollProgress"><div class="bar" id="progressBar"></div></div>
+    <!-- Scroll Progress -->
+    <div id="scrollProgress"><div class="bar" id="progressBar"></div></div>
 
-<!-- Navigation -->
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 sm:h-20">
-            <a href="#" onclick="showMain();return false" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-dark-950 font-bold text-sm font-mono group-hover:shadow-lg group-hover:shadow-gold-500/20 transition-shadow">PS</div>
-                <div class="hidden sm:block">
-                    <div class="text-xs font-bold tracking-wider text-gold-500">ICPC OTU</div>
-                    <div class="text-[10px] text-gray-500 tracking-wide">SUMMER CAMP</div>
-                </div>
-            </a>
-            <div class="hidden lg:flex items-center gap-8" id="desktopNav">
-                <a href="#about" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">عن المعسكر</a>
-                <a href="#progress" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">الرحلة</a>
-                <a href="#roadmap" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">المسار</a>
-                <a href="#leaderboard" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">المتصدرين</a>
-                <a href="#gamification" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">التقييم</a>
-                <a href="#resources" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">الموارد</a>
-            </div>
-            <button id="menuToggle" class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px] hamburger" aria-label="القائمة">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-        </div>
-    </div>
-</nav>
-
-<!-- Mobile Menu -->
-<div class="mobile-menu fixed inset-0 z-40 bg-dark-950/98 backdrop-blur-xl lg:hidden" id="mobileMenu">
-    <div class="flex flex-col items-center justify-center h-full gap-7">
-        <a href="#about" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">عن المعسكر</a>
-        <a href="#progress" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">الرحلة</a>
-        <a href="#roadmap" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">المسار</a>
-        <a href="#leaderboard" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">المتصدرين</a>
-        <a href="#gamification" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">التقييم</a>
-        <a href="#resources" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">الموارد</a>
-    </div>
-</div>
-
-<!-- ==================== MAIN PAGE ==================== -->
-<div id="mainPage">
-
-<!-- HERO -->
-<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <canvas id="matrixCanvas"></canvas>
-    <div class="particle" style="left:10%;top:80%;animation-delay:0s"></div>
-    <div class="particle" style="left:30%;top:90%;animation-delay:4s"></div>
-    <div class="particle" style="left:55%;top:85%;animation-delay:8s"></div>
-    <div class="particle" style="left:80%;top:75%;animation-delay:12s"></div>
-    <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-gold-500/5 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gold-600/5 rounded-full blur-[100px]"></div>
-
-    <div class="hero-content relative z-10 text-center px-4 max-w-5xl mx-auto">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-500/20 bg-gold-500/5 mb-8">
-            <span class="w-2 h-2 rounded-full bg-gold-500 badge-pulse"></span>
-            <span class="text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-gold-400">Powered by ICPC OTU Community</span>
-        </div>
-        <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-4">
-            <span class="block gradient-text">Problem Solving</span>
-            <span class="block text-white mt-2">Summer Camp <span class="gradient-text-gold">2026</span></span>
-        </h1>
-        <div class="text-base sm:text-xl md:text-2xl text-gray-400 mb-10 h-8 flex items-center justify-center">
-            <span>رحلتك نحو</span>
-            <span class="text-gold-400 font-bold mx-2" id="typingText"></span>
-            <span class="typing-cursor"></span>
-        </div>
-        <a href="#about" class="group inline-flex items-center gap-2 border border-white/10 hover:border-white/25 text-white font-bold text-sm tracking-wider uppercase px-8 py-4 rounded-full transition-all hover:bg-white/5">
-            <span>اكتشف المعسكر</span>
-            <iconify-icon icon="lucide:chevron-down" class="group-hover:translate-y-0.5 transition-transform"></iconify-icon>
-        </a>
-    </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="py-20 sm:py-28 relative">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">About The Camp</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">ما هو <span class="gradient-text-gold">المعسكر</span>؟</h2>
-            <p class="text-gray-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
-                بيئة تعليمية تفاعلية خلال الإجازة الصيفية لتطوير مهارات البرمجة وحل المشكلات، يعتمد على التعلم العملي والتفاعل والمنافسة لإعداد المشاركين للمسابقات البرمجية وعلى رأسها <span class="text-gold-400 font-bold">ECPC</span>
-            </p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 sm:gap-6 max-w-lg mx-auto mb-12">
-            <div class="glow-card p-6 sm:p-8 text-center reveal reveal-d1">
-                <div class="text-3xl sm:text-5xl font-black gradient-text-gold stat-number" data-target="5">0</div>
-                <div class="text-sm text-gray-400 mt-2 font-medium">أسابيع</div>
-            </div>
-            <div class="glow-card p-6 sm:p-8 text-center reveal reveal-d2">
-                <div class="text-3xl sm:text-5xl font-black gradient-text-gold stat-number" data-target="10">0</div>
-                <div class="text-sm text-gray-400 mt-2 font-medium">جلسة</div>
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-5">
-            <div class="glow-card p-6 reveal reveal-d2">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-9 h-9 rounded-lg bg-gold-500/10 flex items-center justify-center"><iconify-icon icon="lucide:users" class="text-gold-500 text-lg"></iconify-icon></div>
-                    <h3 class="font-bold">الفئة المستهدفة</h3>
-                </div>
-                <ul class="space-y-2.5 text-gray-400 text-sm">
-                    <li class="flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-gold-500 text-xs flex-shrink-0"></iconify-icon>جميع طلاب الجامعة المهتمين بالبرمجة</li>
-                    <li class="flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-gold-500 text-xs flex-shrink-0"></iconify-icon>المبتدئون في البرمجة</li>
-                    <li class="flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-gold-500 text-xs flex-shrink-0"></iconify-icon>الراغبون في دخول مسابقات البرمجة</li>
-                    <li class="flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-gold-500 text-xs flex-shrink-0"></iconify-icon>الفرق المشاركة في ECPC</li>
-                </ul>
-            </div>
-            <div class="glow-card p-6 reveal reveal-d3">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-9 h-9 rounded-lg bg-gold-500/10 flex items-center justify-center"><iconify-icon icon="lucide:calendar" class="text-gold-500 text-lg"></iconify-icon></div>
-                    <h3 class="font-bold">هيكل البرنامج</h3>
-                </div>
-                <div class="space-y-3 text-sm">
-                    <div class="flex items-start gap-3">
-                        <span class="text-gold-500 font-mono font-bold text-xs mt-0.5 flex-shrink-0">الثلاثاء</span>
-                        <div><div class="text-white font-semibold">Workshop Day</div><div class="text-gray-500 text-xs">2 ساعة</div></div>
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <a href="#" onclick="showMain();return false" class="flex items-center gap-3 group">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-dark-950 font-bold text-sm font-mono group-hover:shadow-lg group-hover:shadow-gold-500/20 transition-shadow">PS</div>
+                    <div class="hidden sm:block">
+                        <div class="text-xs font-bold tracking-wider text-gold-500">ICPC OTU</div>
+                        <div class="text-[10px] text-gray-500 tracking-wide">SUMMER CAMP</div>
                     </div>
-                    <div class="flex items-start gap-3">
-                        <span class="text-gold-500 font-mono font-bold text-xs mt-0.5 flex-shrink-0">الأربعاء</span>
-                        <div><div class="text-white font-semibold">Problem Solving Lab</div><div class="text-gray-500 text-xs">2 ساعة</div></div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="text-gold-500 font-mono font-bold text-xs mt-0.5 flex-shrink-0">التوقيت</span>
-                        <div><div class="text-white font-semibold">12:00 PM</div><div class="text-gray-500 text-xs">لقاءان أسبوعياً</div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CAMP PROGRESS (الرحلة) -->
-<section id="progress" class="py-16 sm:py-24 relative bg-dark-900/50">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Camp Progress</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">رحلة <span class="gradient-text-gold">المعسكر</span></h2>
-            <p class="text-gray-400 text-sm">المعسكر لم يبدأ بعد - تابع معنا</p>
-        </div>
-        
-        <div class="glow-card p-6 sm:p-10 reveal">
-            <div class="flex items-center justify-between gap-1 sm:gap-2 relative">
-                <!-- Week 1 -->
-                <div class="flex flex-col items-center gap-3 w-1/5">
-                    <div class="journey-node journey-locked">
-                        <iconify-icon icon="lucide:lock"></iconify-icon>
-                    </div>
-                    <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 1</span>
-                </div>
-                <div class="journey-line locked"><div class="fill"></div></div>
-                
-                <!-- Week 2 -->
-                <div class="flex flex-col items-center gap-3 w-1/5">
-                    <div class="journey-node journey-locked">
-                        <iconify-icon icon="lucide:lock"></iconify-icon>
-                    </div>
-                    <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 2</span>
-                </div>
-                <div class="journey-line locked"><div class="fill"></div></div>
-                
-                <!-- Week 3 -->
-                <div class="flex flex-col items-center gap-3 w-1/5">
-                    <div class="journey-node journey-locked">
-                        <iconify-icon icon="lucide:lock"></iconify-icon>
-                    </div>
-                    <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 3</span>
-                </div>
-                <div class="journey-line locked"><div class="fill"></div></div>
-                
-                <!-- Week 4 -->
-                <div class="flex flex-col items-center gap-3 w-1/5">
-                    <div class="journey-node journey-locked">
-                        <iconify-icon icon="lucide:lock"></iconify-icon>
-                    </div>
-                    <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 4</span>
-                </div>
-                <div class="journey-line locked"><div class="fill"></div></div>
-                
-                <!-- Week 5 -->
-                <div class="flex flex-col items-center gap-3 w-1/5">
-                    <div class="journey-node journey-locked">
-                        <iconify-icon icon="lucide:lock"></iconify-icon>
-                    </div>
-                    <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 5</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ROADMAP -->
-<section id="roadmap" class="py-20 sm:py-28 relative">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Learning Path</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">المسار <span class="gradient-text-gold">التعليمي</span></h2>
-            <p class="text-gray-400 text-sm max-w-2xl mx-auto">اضغط على أي أسبوع لعرض الموارد والتفاصيل الكاملة</p>
-        </div>
-        <div class="space-y-4" id="roadmapCards"></div>
-    </div>
-</section>
-
-<!-- ADVANCED TRACK -->
-<section class="py-20 sm:py-28 relative bg-dark-900/50">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-xs font-semibold text-gold-400 mb-4">
-                <iconify-icon icon="lucide:trophy"></iconify-icon>ADVANCED TRACK
-            </span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">برنامج دعم فرق <span class="gradient-text-gold">ECPC</span></h2>
-            <p class="text-gray-400 text-sm max-w-2xl mx-auto">جلسة إضافية ساعة بعد كل Workshop مخصصة للفرق المشاركة</p>
-        </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-            <div class="glow-card p-4 text-center reveal reveal-d1"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W1</div><h4 class="text-xs sm:text-sm font-bold mb-1">Contest Env</h4><p class="text-[10px] text-gray-500">Rules, Penalty, Workflow</p></div>
-            <div class="glow-card p-4 text-center reveal reveal-d2"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W2</div><h4 class="text-xs sm:text-sm font-bold mb-1">Implementation</h4><p class="text-[10px] text-gray-500">Debug, Edge Cases</p></div>
-            <div class="glow-card p-4 text-center reveal reveal-d3"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W3</div><h4 class="text-xs sm:text-sm font-bold mb-1">Graph Intro</h4><p class="text-[10px] text-gray-500">BFS, DFS</p></div>
-            <div class="glow-card p-4 text-center reveal reveal-d4"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W4</div><h4 class="text-xs sm:text-sm font-bold mb-1">Greedy</h4><p class="text-[10px] text-gray-500">Patterns, Thinking</p></div>
-            <div class="glow-card p-4 text-center reveal reveal-d5 col-span-2 sm:col-span-1"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W5</div><h4 class="text-xs sm:text-sm font-bold mb-1">DP Intro</h4><p class="text-[10px] text-gray-500">States, Memoization</p></div>
-        </div>
-    </div>
-</section>
-
-<!-- MENTORS -->
-<section id="mentors" class="py-20 sm:py-28 relative">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Meet Your Mentors</span>
-        </div>
-        <div class="grid grid-cols-2 gap-4 sm:gap-6">
-            <div class="glow-card p-5 sm:p-6 text-center reveal reveal-d1 group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-4 bg-dark-700 border-2 border-gold-500/15 flex items-center justify-center group-hover:border-gold-500/40 transition-colors overflow-hidden">
-                    <img src="hossam-mahmoud.png" alt="" class="w-full h-full object-cover">
-                </div>
-                <h4 class="font-bold text-sm sm:text-base">حسام محمود</h4>
-                <a href="https://www.linkedin.com/in/hosam-mahmoud-452583322?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gold-500 transition-colors">
-                    <iconify-icon icon="lucide:linkedin" class="text-sm"></iconify-icon>LinkedIn
                 </a>
-            </div>
-            <div class="glow-card p-5 sm:p-6 text-center reveal reveal-d2 group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-4 bg-dark-700 border-2 border-gold-500/15 flex items-center justify-center group-hover:border-gold-500/40 transition-colors overflow-hidden">
-                    <img src="ahmed-sameh-osama.png" alt="" class="w-full h-full object-cover">
+                <div class="hidden lg:flex items-center gap-8" id="desktopNav">
+                    <a href="#about" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">عن المعسكر</a>
+                    <a href="#progress" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">الرحلة</a>
+                    <a href="#roadmap" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">المسار</a>
+                    <a href="#leaderboard" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">المتصدرين</a>
+                    <a href="#gamification" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">التقييم</a>
+                    <a href="#resources" class="nav-link text-sm text-gray-400 hover:text-white transition-colors">الموارد</a>
                 </div>
-                <h4 class="font-bold text-sm sm:text-base">أحمد سامح</h4>
-                <a href="https://www.linkedin.com/in/ahmed-gad-b798033a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gold-500 transition-colors">
-                    <iconify-icon icon="lucide:linkedin" class="text-sm"></iconify-icon>LinkedIn
-                </a>
-            </div>
-            <div class="glow-card p-5 sm:p-6 text-center reveal reveal-d3 group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-4 bg-dark-700 border-2 border-gold-500/15 flex items-center justify-center group-hover:border-gold-500/40 transition-colors overflow-hidden">
-                    <img src="nada-mohamed-safwat.png" alt="" class="w-full h-full object-cover">
-                </div>
-                <h4 class="font-bold text-sm sm:text-base">ندى صفوت</h4>
-                <a href="https://www.linkedin.com/in/nada-mohammad-safwat-482201260?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gold-500 transition-colors">
-                    <iconify-icon icon="lucide:linkedin" class="text-sm"></iconify-icon>LinkedIn
-                </a>
-            </div>
-            <div class="glow-card p-5 sm:p-6 text-center reveal reveal-d4 group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-4 bg-dark-700 border-2 border-gold-500/15 flex items-center justify-center group-hover:border-gold-500/40 transition-colors overflow-hidden">
-                    <img src="adam-mohamed-mahmoud.png" alt="" class="w-full h-full object-cover">
-                </div>
-                <h4 class="font-bold text-sm sm:text-base">ادم محمد</h4>
-                <a href="https://www.linkedin.com/in/adam-mohamed-91450b192?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gold-500 transition-colors">
-                    <iconify-icon icon="lucide:linkedin" class="text-sm"></iconify-icon>LinkedIn
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- LEADERBOARD (مقسمة لـ 5 نقاط و 3 مسابقة) -->
-<section id="leaderboard" class="py-20 sm:py-28 relative bg-dark-900/50">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Leaderboard</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">لوحة <span class="gradient-text-gold">المتصدرين</span></h2>
-            <p class="text-gray-400 text-sm">سيتم التحديث أسبوعياً مع بدء المعسكر — كن أنت البطل!</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Top 5 Points -->
-            <div class="reveal reveal-d1">
-                <div class="flex items-center gap-3 mb-5">
-                    <iconify-icon icon="lucide:star" class="text-gold-500 text-xl"></iconify-icon>
-                    <h3 class="font-bold text-lg">أعلى 5 في النقاط</h3>
-                </div>
-                <div class="space-y-3">
-                    <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #EAB308">
-                        <div class="text-xl sm:text-2xl font-black gradient-text-gold font-mono w-8 text-center flex-shrink-0">1</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm sm:text-base truncate">—</div>
-                            <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
-                        </div>
-                        <div class="text-left flex-shrink-0">
-                            <div class="text-base sm:text-lg font-black gradient-text-gold font-mono">0</div>
-                            <div class="text-[9px] text-gray-600 text-left">نقطة</div>
-                        </div>
-                    </div>
-                    <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #9CA3AF">
-                        <div class="text-xl sm:text-2xl font-black text-gray-400 font-mono w-8 text-center flex-shrink-0">2</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm sm:text-base truncate">—</div>
-                            <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
-                        </div>
-                        <div class="text-left flex-shrink-0">
-                            <div class="text-base sm:text-lg font-bold text-gray-400 font-mono">0</div>
-                            <div class="text-[9px] text-gray-600 text-left">نقطة</div>
-                        </div>
-                    </div>
-                    <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #B45309">
-                        <div class="text-xl sm:text-2xl font-black text-amber-700 font-mono w-8 text-center flex-shrink-0">3</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm sm:text-base truncate">—</div>
-                            <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
-                        </div>
-                        <div class="text-left flex-shrink-0">
-                            <div class="text-base sm:text-lg font-bold text-amber-700 font-mono">0</div>
-                            <div class="text-[9px] text-gray-600 text-left">نقطة</div>
-                        </div>
-                    </div>
-                    <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid rgba(255,255,255,.1)">
-                        <div class="text-xl sm:text-2xl font-black text-gray-600 font-mono w-8 text-center flex-shrink-0">4</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm sm:text-base truncate">—</div>
-                            <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
-                        </div>
-                        <div class="text-left flex-shrink-0">
-                            <div class="text-base sm:text-lg font-bold text-gray-600 font-mono">0</div>
-                            <div class="text-[9px] text-gray-600 text-left">نقطة</div>
-                        </div>
-                    </div>
-                    <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid rgba(255,255,255,.1)">
-                        <div class="text-xl sm:text-2xl font-black text-gray-600 font-mono w-8 text-center flex-shrink-0">5</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm sm:text-base truncate">—</div>
-                            <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
-                        </div>
-                        <div class="text-left flex-shrink-0">
-                            <div class="text-base sm:text-lg font-bold text-gray-600 font-mono">0</div>
-                            <div class="text-[9px] text-gray-600 text-left">نقطة</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Top 3 Weekly Contest -->
-            <div class="reveal reveal-d2">
-                <div class="flex items-center gap-3 mb-5">
-                    <iconify-icon icon="lucide:swords" class="text-gold-500 text-xl"></iconify-icon>
-                    <h3 class="font-bold text-lg">مسابقة الأسبوع <span class="text-xs text-gray-500 font-normal">(يوم الممارسة)</span></h3>
-                </div>
-                <div class="space-y-3">
-                    <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #EAB308">
-                        <div class="text-xl sm:text-2xl font-black gradient-text-gold font-mono w-8 text-center flex-shrink-0">1</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm sm:text-base truncate">—</div>
-                            <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
-                        </div>
-                        <div class="text-left flex-shrink-0">
-                            <div class="text-base sm:text-lg font-black gradient-text-gold font-mono">0</div>
-                            <div class="text-[9px] text-gray-600 text-left">مسألة</div>
-                        </div>
-                    </div>
-                    <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #9CA3AF">
-                        <div class="text-xl sm:text-2xl font-black text-gray-400 font-mono w-8 text-center flex-shrink-0">2</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm sm:text-base truncate">—</div>
-                            <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
-                        </div>
-                        <div class="text-left flex-shrink-0">
-                            <div class="text-base sm:text-lg font-bold text-gray-400 font-mono">0</div>
-                            <div class="text-[9px] text-gray-600 text-left">مسألة</div>
-                        </div>
-                    </div>
-                    <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #B45309">
-                        <div class="text-xl sm:text-2xl font-black text-amber-700 font-mono w-8 text-center flex-shrink-0">3</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-bold text-sm sm:text-base truncate">—</div>
-                            <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
-                        </div>
-                        <div class="text-left flex-shrink-0">
-                            <div class="text-base sm:text-lg font-bold text-amber-700 font-mono">0</div>
-                            <div class="text-[9px] text-gray-600 text-left">مسألة</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-6 glow-card p-5 text-center">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- GAMIFICATION & ASSESSMENT SYSTEM -->
-<section id="gamification" class="py-20 sm:py-28 relative">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Assessment System</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">نظام <span class="gradient-text-gold">التقييم والنقاط</span></h2>
-            <p class="text-gray-400 text-sm max-w-2xl mx-auto">كل نشاط بيساعدك تكسب نقاط — اتعلم، تنافس، واصعد في الترتيب</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-5">
-            <!-- Activities Points -->
-            <div class="glow-card p-6 reveal reveal-d1">
-                <h3 class="text-lg font-bold mb-5 flex items-center gap-2">
-                    <iconify-icon icon="lucide:award" class="text-gold-500 text-xl"></iconify-icon>
-                    نقاط الأنشطة
-                </h3>
-                <div class="space-y-3">
-                    <div class="flex justify-between items-center pb-3 border-b border-white/5">
-                        <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:presentation" class="text-gold-600"></iconify-icon>حضور الـ Workshop</span>
-                        <span class="text-gold-500 font-bold font-mono">15 نقطة</span>
-                    </div>
-                    <div class="flex justify-between items-center pb-3 border-b border-white/5">
-                        <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:code-2" class="text-gold-600"></iconify-icon>حضور Practice</span>
-                        <span class="text-gold-500 font-bold font-mono">15 نقطة</span>
-                    </div>
-                    <div class="flex justify-between items-center pb-3 border-b border-white/5">
-                        <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:help-circle" class="text-gold-600"></iconify-icon>كويز الجلسة</span>
-                        <span class="text-gold-500 font-bold font-mono">10 نقاط</span>
-                    </div>
-                    <div class="flex justify-between items-center pb-3 border-b border-white/5">
-                        <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:file-code" class="text-gold-600"></iconify-icon>حل مسائل الجلسة</span>
-                        <span class="text-gold-500 font-bold font-mono">25 نقطة</span>
-                    </div>
-                    <div class="flex justify-between items-center pb-3 border-b border-white/5">
-                        <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:swords" class="text-gold-600"></iconify-icon>التحدي الأسبوعي</span>
-                        <span class="text-gold-500 font-bold font-mono">50 نقطة</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:flag" class="text-gold-600"></iconify-icon>المشاركة في المسابقة</span>
-                        <span class="text-gold-500 font-bold font-mono">30 نقطة</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contest Rank Bonuses -->
-            <div class="glow-card p-6 reveal reveal-d2">
-                <h3 class="text-lg font-bold mb-5 flex items-center gap-2">
-                    <iconify-icon icon="lucide:trophy" class="text-gold-500 text-xl"></iconify-icon>
-                    مكافآت الترتيب في المسابقة
-                </h3>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-dark-800 border-r-2 border-gold-500">
-                        <div class="text-2xl">🥇</div>
-                        <div class="flex-1">
-                            <div class="font-bold text-gold-500">المركز الأول</div>
-                            <div class="text-xs text-gray-500">على المسابقة الأسبوعية</div>
-                        </div>
-                        <div class="text-xl font-black gradient-text-gold font-mono">+10</div>
-                    </div>
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-dark-800 border-r-2 border-gray-400">
-                        <div class="text-2xl">🥈</div>
-                        <div class="flex-1">
-                            <div class="font-bold text-gray-400">المركز الثاني</div>
-                            <div class="text-xs text-gray-500">على المسابقة الأسبوعية</div>
-                        </div>
-                        <div class="text-xl font-black text-gray-400 font-mono">+7</div>
-                    </div>
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-dark-800 border-r-2 border-amber-700">
-                        <div class="text-2xl">🥉</div>
-                        <div class="flex-1">
-                            <div class="font-bold text-amber-700">المركز الثالث</div>
-                            <div class="text-xs text-gray-500">على المسابقة الأسبوعية</div>
-                        </div>
-                        <div class="text-xl font-black text-amber-700 font-mono">+5</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- GALLERY -->
-<section id="gallery" class="py-20 sm:py-28 relative bg-dark-900/50">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Activities</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">معرض <span class="gradient-text-gold">الأنشطة</span></h2>
-            <p class="text-gray-400 text-sm">لحظات من الورش والمسابقات والأنشطة المختلفة</p>
-        </div>
-
-        <div class="glow-card p-10 sm:p-16 text-center reveal">
-            <div class="empty-float mb-5">
-                <div class="w-20 h-20 mx-auto rounded-2xl bg-gold-500/5 border border-gold-500/10 flex items-center justify-center">
-                    <iconify-icon icon="lucide:image" class="text-gold-500/25 text-3xl"></iconify-icon>
-                </div>
-            </div>
-            <h3 class="text-lg font-bold mb-2">الصور قريباً</h3>
-            <p class="text-sm text-gray-500 max-w-sm mx-auto">هنبدأ نرفع صور الأنشطة والورش والمسابقات مع بداية المعسكر — تابعونا</p>
-        </div>
-    </div>
-</section>
-
-<!-- RESOURCES -->
-<section id="resources" class="py-20 sm:py-28 relative">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Weekly Content</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">محتوى <span class="gradient-text-gold">كل أسبوع</span></h2>
-            <p class="text-gray-400 text-sm max-w-2xl mx-auto">اضغط على أي أسبوع لعرض الموارد والتحديات والصور</p>
-        </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" id="resourceCards"></div>
-    </div>
-</section>
-
-<!-- UPCOMING EVENTS -->
-<section id="events" class="py-20 sm:py-28 relative bg-dark-900/50">
-    <div class="section-divider mb-20"></div>
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14 reveal">
-            <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Upcoming</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">الجلسة <span class="gradient-text-gold">القادمة</span></h2>
-        </div>
-        <div class="glow-card p-6 sm:p-8 reveal">
-            <div class="flex flex-col sm:flex-row gap-5">
-                <div class="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-gold-500/10 to-gold-700/5 border border-gold-500/15 flex flex-col items-center justify-center">
-                    <div class="text-3xl font-black gradient-text-gold leading-none font-mono">01</div>
-                    <div class="text-[10px] text-gold-500 font-semibold mt-1">الأسبوع الأول</div>
-                </div>
-                <div class="flex-1">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="w-2 h-2 rounded-full bg-gold-500 badge-pulse"></span>
-                        <span class="text-[11px] text-gold-500 font-semibold">الجلسة الافتتاحية</span>
-                    </div>
-                    <h3 class="text-lg sm:text-xl font-bold mb-3">Introduction to Programming & Problem Solving</h3>
-                    <div class="flex flex-wrap gap-3 sm:gap-4 text-xs text-gray-500">
-                        <div class="flex items-center gap-1.5"><iconify-icon icon="lucide:calendar" class="text-gold-600"></iconify-icon>الثلاثاء — قريباً</div>
-                        <div class="flex items-center gap-1.5"><iconify-icon icon="lucide:clock" class="text-gold-600"></iconify-icon>12:00 PM</div>
-                        <div class="flex items-center gap-1.5"><iconify-icon icon="lucide:map-pin" class="text-gold-600"></iconify-icon>يتم التحديد</div>
-                    </div>
-                    <div class="flex flex-wrap gap-1.5 mt-3">
-                        <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">C++ Basics</span>
-                        <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">I/O</span>
-                        <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">Conditions</span>
-                        <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">Loops</span>
-                        <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">Live Coding</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="border-t border-white/5 py-14">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-4 gap-8 mb-10">
-            <div class="md:col-span-2">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-dark-950 font-bold text-sm font-mono">PS</div>
-                    <div>
-                        <div class="text-sm font-bold">Problem Solving Camp</div>
-                        <div class="text-[10px] text-gray-500">ICPC OTU Community — 2026</div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h4 class="text-sm font-bold mb-3">روابط سريعة</h4>
-                <ul class="space-y-2">
-                    <li><a href="#about" class="text-xs text-gray-500 hover:text-gold-500 transition-colors">عن المعسكر</a></li>
-                    <li><a href="#roadmap" class="text-xs text-gray-500 hover:text-gold-500 transition-colors">المسار التعليمي</a></li>
-                    <li><a href="#leaderboard" class="text-xs text-gray-500 hover:text-gold-500 transition-colors">المتصدرين</a></li>
-                    <li><a href="#resources" class="text-xs text-gray-500 hover:text-gold-500 transition-colors">الموارد</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-bold mb-3">تواصل معنا</h4>
-                <ul class="space-y-2">
-                    <li><a href="#" class="text-xs text-gray-500 hover:text-gold-500 transition-colors flex items-center gap-1.5"><iconify-icon icon="lucide:instagram"></iconify-icon>Instagram</a></li>
-                    <li><a href="#" class="text-xs text-gray-500 hover:text-gold-500 transition-colors flex items-center gap-1.5"><iconify-icon icon="lucide:facebook"></iconify-icon>Facebook</a></li>
-                    <li><a href="#" class="text-xs text-gray-500 hover:text-gold-500 transition-colors flex items-center gap-1.5"><iconify-icon icon="lucide:github"></iconify-icon>GitHub</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p class="text-[10px] text-gray-600">© 2026 ICPC OTU Community</p>
-            <p class="text-[10px] text-gray-600">Made with <span class="text-gold-500">♥</span> for the community</p>
-        </div>
-    </div>
-</footer>
-
-</div><!-- end mainPage -->
-
-<!-- ==================== WEEK DETAIL PAGE ==================== -->
-<div id="weekPage">
-    <div id="weekContent"></div>
-</div>
-
-<!-- Back to Top -->
-<button id="backToTop" class="fixed bottom-5 left-5 z-50 w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center hover:bg-gold-500/20 transition-all" aria-label="أعلى">
-    <iconify-icon icon="lucide:chevron-up" class="text-gold-500"></iconify-icon>
-</button>
-
-<script>
-// ===== DATA =====
-const weeksData = [
-    {
-        num: 1, title: 'Introduction to Programming & Problem Solving', titleAr: 'مقدمة في البرمجة وحل المشكلات',
-        topics: ['What is Programming', 'What is Problem Solving', 'C++ Basics', 'Input & Output', 'Variables & Data Types', 'Conditions', 'Loops'],
-        practice: 'Beginner Problems — Level A-B-C',
-        challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
-    },
-    {
-        num: 2, title: 'Functions, Arrays & Strings', titleAr: 'الدوال والمصفوفات والنصوص',
-        topics: ['Functions — Declaration & Parameters', 'Arrays — 1D & 2D', 'Strings', 'Basic Problem Solving Techniques'],
-        practice: 'Easy Implementation Problems',
-        challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
-    },
-    {
-        num: 3, title: 'STL & Data Structures Basics', titleAr: 'المكتبة القياسية وهياكل البيانات',
-        topics: ['Vector', 'Pair', 'Set', 'Map', 'STL Algorithms & Iterators', 'When to use what'],
-        practice: 'STL Based Problems + Contest Session',
-        challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
-    },
-    {
-        num: 4, title: 'Complexity & Binary Search', titleAr: 'التعقيد والبحث الثنائي',
-        topics: ['Time Complexity', 'Big O Notation', 'Linear Search vs Binary Search', 'Binary Search on Answer'],
-        practice: 'Binary Search Problems',
-        challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
-    },
-    {
-        num: 5, title: 'Greedy & Introduction to DP', titleAr: 'الجشع ومقدمة في البرمجة الديناميكية',
-        topics: ['Greedy Algorithms', 'DP Basics', 'Memoization vs Tabulation'],
-        practice: 'Greedy & DP Problems',
-        challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
-    }
-];
-
-// ===== RENDER ROADMAP =====
-const roadmapCards = document.getElementById('roadmapCards');
-const resourceCards = document.getElementById('resourceCards');
-
-weeksData.forEach((week, index) => {
-    // Roadmap Accordion
-    const card = document.createElement('div');
-    card.className = 'glow-card overflow-hidden reveal';
-    card.style.transitionDelay = `${index * 0.1}s`;
-    card.innerHTML = `
-        <button class="w-full p-5 sm:p-6 flex items-center gap-4 text-right" onclick="toggleAccordion(${index})">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gold-500/5 border border-gold-500/10 flex items-center justify-center flex-shrink-0">
-                <span class="text-xl sm:text-2xl font-black gradient-text-gold font-mono">${week.num}</span>
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="text-[10px] text-gold-500 font-mono font-bold mb-1">WEEK ${week.num}</div>
-                <h3 class="font-bold text-sm sm:text-lg truncate">${week.titleAr}</h3>
-            </div>
-            <iconify-icon icon="lucide:chevron-down" class="accordion-icon text-gold-500 text-xl transition-transform" id="acc-icon-${index}"></iconify-icon>
-        </button>
-        <div class="accordion-content" id="acc-content-${index}">
-            <div class="p-5 sm:p-6 pt-0 border-t border-white/5 mt-2">
-                <div class="grid sm:grid-cols-2 gap-4 mt-4">
-                    <div>
-                        <h4 class="text-xs font-bold text-gray-400 mb-2 flex items-center gap-1.5"><iconify-icon icon="lucide:book-open" class="text-gold-500"></iconify-icon>المواضيع</h4>
-                        <ul class="space-y-1.5">
-                            ${week.topics.map(t => `<li class="text-xs text-gray-400 flex items-center gap-2"><span class="w-1 h-1 bg-gold-500 rounded-full"></span>${t}</li>`).join('')}
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xs font-bold text-gray-400 mb-2 flex items-center gap-1.5"><iconify-icon icon="lucide:code" class="text-gold-500"></iconify-icon>الممارسة</h4>
-                        <p class="text-xs text-gray-400 mb-3">${week.practice}</p>
-                        <h4 class="text-xs font-bold text-gray-400 mb-2 flex items-center gap-1.5"><iconify-icon icon="lucide:swords" class="text-gold-500"></iconify-icon>التحدي</h4>
-                        <ul class="space-y-1.5">
-                            ${week.challenge.map(c => `<li class="text-xs text-gray-400 flex items-center gap-2"><span class="w-1 h-1 bg-gold-500 rounded-full"></span>${c}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    roadmapCards.appendChild(card);
-
-    // Resource Card
-    const resCard = document.createElement('div');
-    resCard.className = 'glow-card p-6 cursor-pointer group reveal';
-    resCard.style.transitionDelay = `${index * 0.1}s`;
-    resCard.onclick = () => showWeek(week.num);
-    resCard.innerHTML = `
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-gold-500/10 flex items-center justify-center">
-                <span class="text-lg font-black gradient-text-gold font-mono">${week.num}</span>
-            </div>
-            <iconify-icon icon="lucide:arrow-left-circle" class="text-gray-600 group-hover:text-gold-500 transition-colors text-xl resource-icon"></iconify-icon>
-        </div>
-        <div class="text-[10px] text-gold-500 font-mono font-bold mb-1">WEEK ${week.num}</div>
-        <h3 class="font-bold text-sm sm:text-base mb-3">${week.titleAr}</h3>
-        <div class="flex flex-wrap gap-1.5">
-            ${week.topics.slice(0, 3).map(t => `<span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">${t.split(' ')[0]}</span>`).join('')}
-        </div>
-    `;
-    resourceCards.appendChild(resCard);
-});
-
-function toggleAccordion(index) {
-    const content = document.getElementById(`acc-content-${index}`);
-    const icon = document.getElementById(`acc-icon-${index}`);
-    content.classList.toggle('open');
-    icon.classList.toggle('rotated');
-}
-
-// ===== WEEK PAGE =====
-function showWeek(weekNum) {
-    const week = weeksData.find(w => w.num === weekNum);
-    const weekContent = document.getElementById('weekContent');
-    
-    weekContent.innerHTML = `
-        <div class="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-4xl mx-auto">
-                <button onclick="showMain()" class="mb-6 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gold-500 transition-colors">
-                    <iconify-icon icon="lucide:arrow-right"></iconify-icon>
-                    العودة للرئيسية
+                <button id="menuToggle" class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px] hamburger" aria-label="القائمة">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
                 </button>
-                
-                <div class="glow-card p-6 sm:p-10 mb-6">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 rounded-2xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
-                            <span class="text-2xl font-black gradient-text-gold font-mono">${week.num}</span>
-                        </div>
-                        <div>
-                            <div class="text-xs text-gold-500 font-mono font-bold mb-1">WEEK ${week.num}</div>
-                            <h1 class="text-2xl sm:text-3xl font-black">${week.titleAr}</h1>
-                        </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu fixed inset-0 z-40 bg-dark-950/98 backdrop-blur-xl lg:hidden" id="mobileMenu">
+        <div class="flex flex-col items-center justify-center h-full gap-7">
+            <a href="#about" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">عن المعسكر</a>
+            <a href="#progress" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">الرحلة</a>
+            <a href="#roadmap" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">المسار</a>
+            <a href="#leaderboard" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">المتصدرين</a>
+            <a href="#gamification" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">التقييم</a>
+            <a href="#resources" class="mobile-nav-link text-2xl font-bold text-gray-300 hover:text-gold-500 transition-colors">الموارد</a>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN PAGE ==================== -->
+    <div id="mainPage">
+
+        <!-- HERO -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <canvas id="matrixCanvas"></canvas>
+            <div class="particle" style="left:10%;top:80%;animation-delay:0s"></div>
+            <div class="particle" style="left:30%;top:90%;animation-delay:4s"></div>
+            <div class="particle" style="left:55%;top:85%;animation-delay:8s"></div>
+            <div class="particle" style="left:80%;top:75%;animation-delay:12s"></div>
+            <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-gold-500/5 rounded-full blur-[120px]"></div>
+            <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gold-600/5 rounded-full blur-[100px]"></div>
+
+            <div class="hero-content relative z-10 text-center px-4 max-w-5xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-500/20 bg-gold-500/5 mb-8">
+                    <span class="w-2 h-2 rounded-full bg-gold-500 badge-pulse"></span>
+                    <span class="text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-gold-400">Powered by ICPC OTU Community</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-4">
+                    <span class="block gradient-text">Problem Solving</span>
+                    <span class="block text-white mt-2">Summer Camp <span class="gradient-text-gold">2026</span></span>
+                </h1>
+                <div class="text-base sm:text-xl md:text-2xl text-gray-400 mb-10 h-8 flex items-center justify-center">
+                    <span>رحلتك نحو</span>
+                    <span class="text-gold-400 font-bold mx-2" id="typingText"></span>
+                    <span class="typing-cursor"></span>
+                </div>
+                <a href="#about" class="group inline-flex items-center gap-2 border border-white/10 hover:border-white/25 text-white font-bold text-sm tracking-wider uppercase px-8 py-4 rounded-full transition-all hover:bg-white/5">
+                    <span>اكتشف المعسكر</span>
+                    <iconify-icon icon="lucide:chevron-down" class="group-hover:translate-y-0.5 transition-transform"></iconify-icon>
+                </a>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="py-20 sm:py-28 relative">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">About The Camp</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">ما هو <span class="gradient-text-gold">المعسكر</span>؟</h2>
+                    <p class="text-gray-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
+                        بيئة تعليمية تفاعلية خلال الإجازة الصيفية لتطوير مهارات البرمجة وحل المشكلات، يعتمد على التعلم العملي والتفاعل والمنافسة لإعداد المشاركين للمسابقات البرمجية وعلى رأسها <span class="text-gold-400 font-bold">ECPC</span>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 sm:gap-6 max-w-lg mx-auto mb-12">
+                    <div class="glow-card p-6 sm:p-8 text-center reveal reveal-d1">
+                        <div class="text-3xl sm:text-5xl font-black gradient-text-gold stat-number" data-target="5">0</div>
+                        <div class="text-sm text-gray-400 mt-2 font-medium">أسابيع</div>
                     </div>
-                    <div class="grid sm:grid-cols-2 gap-6">
-                        <div class="bg-dark-800 rounded-xl p-5">
-                            <h3 class="text-sm font-bold mb-3 flex items-center gap-2"><iconify-icon icon="lucide:book-open" class="text-gold-500"></iconify-icon>المواضيع</h3>
-                            <ul class="space-y-2">
-                                ${week.topics.map(t => `<li class="text-sm text-gray-400 flex items-center gap-2"><span class="w-1.5 h-1.5 bg-gold-500 rounded-full"></span>${t}</li>`).join('')}
-                            </ul>
+                    <div class="glow-card p-6 sm:p-8 text-center reveal reveal-d2">
+                        <div class="text-3xl sm:text-5xl font-black gradient-text-gold stat-number" data-target="10">0</div>
+                        <div class="text-sm text-gray-400 mt-2 font-medium">جلسة</div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="glow-card p-6 reveal reveal-d2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-9 h-9 rounded-lg bg-gold-500/10 flex items-center justify-center"><iconify-icon icon="lucide:users" class="text-gold-500 text-lg"></iconify-icon></div>
+                            <h3 class="font-bold">الفئة المستهدفة</h3>
                         </div>
-                        <div class="bg-dark-800 rounded-xl p-5">
-                            <h3 class="text-sm font-bold mb-3 flex items-center gap-2"><iconify-icon icon="lucide:code" class="text-gold-500"></iconify-icon>الممارسة والتحدي</h3>
-                            <p class="text-sm text-gray-400 mb-4">${week.practice}</p>
-                            <h4 class="text-xs font-bold text-gray-500 mb-2">التحديات:</h4>
-                            <ul class="space-y-2">
-                                ${week.challenge.map(c => `<li class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:swords" class="text-gold-500 text-xs"></iconify-icon>${c}</li>`).join('')}
-                            </ul>
+                        <ul class="space-y-2.5 text-gray-400 text-sm">
+                            <li class="flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-gold-500 text-xs flex-shrink-0"></iconify-icon>جميع طلاب الجامعة المهتمين بالبرمجة</li>
+                            <li class="flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-gold-500 text-xs flex-shrink-0"></iconify-icon>المبتدئون في البرمجة</li>
+                            <li class="flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-gold-500 text-xs flex-shrink-0"></iconify-icon>الراغبون في دخول مسابقات البرمجة</li>
+                            <li class="flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-gold-500 text-xs flex-shrink-0"></iconify-icon>الفرق المشاركة في ECPC</li>
+                        </ul>
+                    </div>
+                    <div class="glow-card p-6 reveal reveal-d3">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-9 h-9 rounded-lg bg-gold-500/10 flex items-center justify-center"><iconify-icon icon="lucide:calendar" class="text-gold-500 text-lg"></iconify-icon></div>
+                            <h3 class="font-bold">هيكل البرنامج</h3>
+                        </div>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-start gap-3">
+                                <span class="text-gold-500 font-mono font-bold text-xs mt-0.5 flex-shrink-0">الثلاثاء</span>
+                                <div><div class="text-white font-semibold">Workshop Day</div><div class="text-gray-500 text-xs">2 ساعة</div></div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-gold-500 font-mono font-bold text-xs mt-0.5 flex-shrink-0">الأربعاء</span>
+                                <div><div class="text-white font-semibold">Problem Solving Lab</div><div class="text-gray-500 text-xs">2 ساعة</div></div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-gold-500 font-mono font-bold text-xs mt-0.5 flex-shrink-0">التوقيت</span>
+                                <div><div class="text-white font-semibold">12:00 PM</div><div class="text-gray-500 text-xs">لقاءان أسبوعياً</div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    `;
-    
-    document.getElementById('mainPage').classList.add('hidden-page');
-    document.getElementById('weekPage').classList.add('active');
-    window.scrollTo(0, 0);
-}
+        </section>
 
-function showMain() {
-    document.getElementById('mainPage').classList.remove('hidden-page');
-    document.getElementById('weekPage').classList.remove('active');
-    window.scrollTo(0, 0);
-}
+        <!-- CAMP PROGRESS (الرحلة) -->
+        <section id="progress" class="py-16 sm:py-24 relative bg-dark-900/50">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Camp Progress</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">رحلة <span class="gradient-text-gold">المعسكر</span></h2>
+                    <p class="text-gray-400 text-sm">المعسكر لم يبدأ بعد - تابع معنا</p>
+                </div>
 
-// ===== NAVBAR & SCROLL =====
-const navbar = document.getElementById('navbar');
-const progressBar = document.getElementById('progressBar');
-const backToTop = document.getElementById('backToTop');
+                <div class="glow-card p-6 sm:p-10 reveal">
+                    <div class="flex items-center justify-between gap-1 sm:gap-2 relative">
+                        <!-- Week 1 -->
+                        <div class="flex flex-col items-center gap-3 w-1/5">
+                            <div class="journey-node journey-locked">
+                                <iconify-icon icon="lucide:lock"></iconify-icon>
+                            </div>
+                            <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 1</span>
+                        </div>
+                        <div class="journey-line locked"><div class="fill"></div></div>
 
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    
-    if (scrolled > 50) {
-        navbar.classList.add('bg-dark-950/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
-    } else {
-        navbar.classList.remove('bg-dark-950/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
-    }
-    
-    const height = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (scrolled / height) * 100;
-    progressBar.style.width = `${progress}%`;
-    
-    if (scrolled > 500) {
-        backToTop.classList.add('visible');
-    } else {
-        backToTop.classList.remove('visible');
-    }
-});
+                        <!-- Week 2 -->
+                        <div class="flex flex-col items-center gap-3 w-1/5">
+                            <div class="journey-node journey-locked">
+                                <iconify-icon icon="lucide:lock"></iconify-icon>
+                            </div>
+                            <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 2</span>
+                        </div>
+                        <div class="journey-line locked"><div class="fill"></div></div>
 
-backToTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+                        <!-- Week 3 -->
+                        <div class="flex flex-col items-center gap-3 w-1/5">
+                            <div class="journey-node journey-locked">
+                                <iconify-icon icon="lucide:lock"></iconify-icon>
+                            </div>
+                            <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 3</span>
+                        </div>
+                        <div class="journey-line locked"><div class="fill"></div></div>
 
-// ===== MOBILE MENU =====
-const menuToggle = document.getElementById('menuToggle');
-const mobileMenu = document.getElementById('mobileMenu');
+                        <!-- Week 4 -->
+                        <div class="flex flex-col items-center gap-3 w-1/5">
+                            <div class="journey-node journey-locked">
+                                <iconify-icon icon="lucide:lock"></iconify-icon>
+                            </div>
+                            <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 4</span>
+                        </div>
+                        <div class="journey-line locked"><div class="fill"></div></div>
 
-menuToggle.addEventListener('click', () => {
-    menuToggle.classList.toggle('active');
-    mobileMenu.classList.toggle('open');
-});
+                        <!-- Week 5 -->
+                        <div class="flex flex-col items-center gap-3 w-1/5">
+                            <div class="journey-node journey-locked">
+                                <iconify-icon icon="lucide:lock"></iconify-icon>
+                            </div>
+                            <span class="text-[10px] sm:text-sm font-bold text-gray-600">الأسبوع 5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-document.querySelectorAll('.mobile-nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        menuToggle.classList.remove('active');
-        mobileMenu.classList.remove('open');
-    });
-});
+        <!-- ROADMAP -->
+        <section id="roadmap" class="py-20 sm:py-28 relative">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Learning Path</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">المسار <span class="gradient-text-gold">التعليمي</span></h2>
+                    <p class="text-gray-400 text-sm max-w-2xl mx-auto">اضغط على أي أسبوع لعرض الموارد والتفاصيل الكاملة</p>
+                </div>
+                <div class="space-y-4" id="roadmapCards"></div>
+            </div>
+        </section>
 
-// ===== REVEAL ON SCROLL =====
-const revealEls = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
+        <!-- ADVANCED TRACK (ECPC Teams) -->
+        <section class="py-20 sm:py-28 relative bg-dark-900/50">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-xs font-semibold text-gold-400 mb-4">
+                        <iconify-icon icon="lucide:trophy"></iconify-icon>ECPC TEAMS TRACK
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">برنامج دعم فرق <span class="gradient-text-gold">ECPC</span></h2>
+                    <p class="text-gray-400 text-sm max-w-2xl mx-auto">جلسة إضافية ساعة بعد كل Workshop مخصصة للفرق المشاركة</p>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+                    <div class="glow-card p-4 text-center reveal reveal-d1"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W1</div>
+                        <h4 class="text-xs sm:text-sm font-bold mb-1">ICPC &amp; Contest Env</h4>
+                        <p class="text-[10px] text-gray-500">Rules, Penalty, Workflow</p>
+                    </div>
+                    <div class="glow-card p-4 text-center reveal reveal-d2"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W2</div>
+                        <h4 class="text-xs sm:text-sm font-bold mb-1">Debugging &amp; Edge Cases</h4>
+                        <p class="text-[10px] text-gray-500">Common Mistakes, Testing</p>
+                    </div>
+                    <div class="glow-card p-4 text-center reveal reveal-d3"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W3</div>
+                        <h4 class="text-xs sm:text-sm font-bold mb-1">Graph Intro</h4>
+                        <p class="text-[10px] text-gray-500">BFS, DFS Basics</p>
+                    </div>
+                    <div class="glow-card p-4 text-center reveal reveal-d4"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W4</div>
+                        <h4 class="text-xs sm:text-sm font-bold mb-1">Greedy &amp; Math</h4>
+                        <p class="text-[10px] text-gray-500">Sorting, GCD, Sieve</p>
+                    </div>
+                    <div class="glow-card p-4 text-center reveal reveal-d5 col-span-2 sm:col-span-1"><div class="text-xs font-mono text-gold-500 font-bold mb-1">W5</div>
+                        <h4 class="text-xs sm:text-sm font-bold mb-1">DP &amp; Backtracking</h4>
+                        <p class="text-[10px] text-gray-500">States, Memoization</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENTORS -->
+        <section id="mentors" class="py-20 sm:py-28 relative">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Meet Your Mentors</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 sm:gap-6">
+                    <div class="glow-card p-5 sm:p-6 text-center reveal reveal-d1 group">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-4 bg-dark-700 border-2 border-gold-500/15 flex items-center justify-center group-hover:border-gold-500/40 transition-colors overflow-hidden">
+                            <img src="hossam-mahmoud.png" alt="" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="font-bold text-sm sm:text-base">حسام محمود</h4>
+                        <a href="https://www.linkedin.com/in/hosam-mahmoud-452583322?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gold-500 transition-colors">
+                            <iconify-icon icon="lucide:linkedin" class="text-sm"></iconify-icon>LinkedIn
+                        </a>
+                    </div>
+                    <div class="glow-card p-5 sm:p-6 text-center reveal reveal-d2 group">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-4 bg-dark-700 border-2 border-gold-500/15 flex items-center justify-center group-hover:border-gold-500/40 transition-colors overflow-hidden">
+                            <img src="ahmed-sameh-osama.png" alt="" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="font-bold text-sm sm:text-base">أحمد سامح</h4>
+                        <a href="https://www.linkedin.com/in/ahmed-gad-b798033a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gold-500 transition-colors">
+                            <iconify-icon icon="lucide:linkedin" class="text-sm"></iconify-icon>LinkedIn
+                        </a>
+                    </div>
+                    <div class="glow-card p-5 sm:p-6 text-center reveal reveal-d3 group">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-4 bg-dark-700 border-2 border-gold-500/15 flex items-center justify-center group-hover:border-gold-500/40 transition-colors overflow-hidden">
+                            <img src="nada-mohamed-safwat.png" alt="" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="font-bold text-sm sm:text-base">ندى صفوت</h4>
+                        <a href="https://www.linkedin.com/in/nada-mohammad-safwat-482201260?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gold-500 transition-colors">
+                            <iconify-icon icon="lucide:linkedin" class="text-sm"></iconify-icon>LinkedIn
+                        </a>
+                    </div>
+                    <div class="glow-card p-5 sm:p-6 text-center reveal reveal-d4 group">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-4 bg-dark-700 border-2 border-gold-500/15 flex items-center justify-center group-hover:border-gold-500/40 transition-colors overflow-hidden">
+                            <img src="adam-mohamed-mahmoud.png" alt="" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="font-bold text-sm sm:text-base">ادم محمد</h4>
+                        <a href="https://www.linkedin.com/in/adam-mohamed-91450b192?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gold-500 transition-colors">
+                            <iconify-icon icon="lucide:linkedin" class="text-sm"></iconify-icon>LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEADERBOARD -->
+        <section id="leaderboard" class="py-20 sm:py-28 relative bg-dark-900/50">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Leaderboard</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">لوحة <span class="gradient-text-gold">المتصدرين</span></h2>
+                    <p class="text-gray-400 text-sm">سيتم التحديث أسبوعياً مع بدء المعسكر — كن أنت البطل!</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Top 5 Points -->
+                    <div class="reveal reveal-d1">
+                        <div class="flex items-center gap-3 mb-5">
+                            <iconify-icon icon="lucide:star" class="text-gold-500 text-xl"></iconify-icon>
+                            <h3 class="font-bold text-lg">أعلى 5 في النقاط</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #EAB308">
+                                <div class="text-xl sm:text-2xl font-black gradient-text-gold font-mono w-8 text-center flex-shrink-0">1</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-sm sm:text-base truncate">—</div>
+                                    <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
+                                </div>
+                                <div class="text-left flex-shrink-0">
+                                    <div class="text-base sm:text-lg font-black gradient-text-gold font-mono">0</div>
+                                    <div class="text-[9px] text-gray-600 text-left">نقطة</div>
+                                </div>
+                            </div>
+                            <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #9CA3AF">
+                                <div class="text-xl sm:text-2xl font-black text-gray-400 font-mono w-8 text-center flex-shrink-0">2</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-sm sm:text-base truncate">—</div>
+                                    <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
+                                </div>
+                                <div class="text-left flex-shrink-0">
+                                    <div class="text-base sm:text-lg font-bold text-gray-400 font-mono">0</div>
+                                    <div class="text-[9px] text-gray-600 text-left">نقطة</div>
+                                </div>
+                            </div>
+                            <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #B45309">
+                                <div class="text-xl sm:text-2xl font-black text-amber-700 font-mono w-8 text-center flex-shrink-0">3</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-sm sm:text-base truncate">—</div>
+                                    <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
+                                </div>
+                                <div class="text-left flex-shrink-0">
+                                    <div class="text-base sm:text-lg font-bold text-amber-700 font-mono">0</div>
+                                    <div class="text-[9px] text-gray-600 text-left">نقطة</div>
+                                </div>
+                            </div>
+                            <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid rgba(255,255,255,.1)">
+                                <div class="text-xl sm:text-2xl font-black text-gray-600 font-mono w-8 text-center flex-shrink-0">4</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-sm sm:text-base truncate">—</div>
+                                    <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
+                                </div>
+                                <div class="text-left flex-shrink-0">
+                                    <div class="text-base sm:text-lg font-bold text-gray-600 font-mono">0</div>
+                                    <div class="text-[9px] text-gray-600 text-left">نقطة</div>
+                                </div>
+                            </div>
+                            <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid rgba(255,255,255,.1)">
+                                <div class="text-xl sm:text-2xl font-black text-gray-600 font-mono w-8 text-center flex-shrink-0">5</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-sm sm:text-base truncate">—</div>
+                                    <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
+                                </div>
+                                <div class="text-left flex-shrink-0">
+                                    <div class="text-base sm:text-lg font-bold text-gray-600 font-mono">0</div>
+                                    <div class="text-[9px] text-gray-600 text-left">نقطة</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top 3 Weekly Contest -->
+                    <div class="reveal reveal-d2">
+                        <div class="flex items-center gap-3 mb-5">
+                            <iconify-icon icon="lucide:swords" class="text-gold-500 text-xl"></iconify-icon>
+                            <h3 class="font-bold text-lg">مسابقة الأسبوع <span class="text-xs text-gray-500 font-normal">(يوم الممارسة)</span></h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #EAB308">
+                                <div class="text-xl sm:text-2xl font-black gradient-text-gold font-mono w-8 text-center flex-shrink-0">1</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-sm sm:text-base truncate">—</div>
+                                    <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
+                                </div>
+                                <div class="text-left flex-shrink-0">
+                                    <div class="text-base sm:text-lg font-black gradient-text-gold font-mono">0</div>
+                                    <div class="text-[9px] text-gray-600 text-left">مسألة</div>
+                                </div>
+                            </div>
+                            <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #9CA3AF">
+                                <div class="text-xl sm:text-2xl font-black text-gray-400 font-mono w-8 text-center flex-shrink-0">2</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-sm sm:text-base truncate">—</div>
+                                    <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
+                                </div>
+                                <div class="text-left flex-shrink-0">
+                                    <div class="text-base sm:text-lg font-bold text-gray-400 font-mono">0</div>
+                                    <div class="text-[9px] text-gray-600 text-left">مسألة</div>
+                                </div>
+                            </div>
+                            <div class="rank-card bg-dark-800 flex items-center gap-4" style="border-right:3px solid #B45309">
+                                <div class="text-xl sm:text-2xl font-black text-amber-700 font-mono w-8 text-center flex-shrink-0">3</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-sm sm:text-base truncate">—</div>
+                                    <div class="text-[11px] text-gray-500 truncate">— &bull; الفرقة —</div>
+                                </div>
+                                <div class="text-left flex-shrink-0">
+                                    <div class="text-base sm:text-lg font-bold text-amber-700 font-mono">0</div>
+                                    <div class="text-[9px] text-gray-600 text-left">مسألة</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 glow-card p-5 text-center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAMIFICATION -->
+        <section id="gamification" class="py-20 sm:py-28 relative">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Assessment System</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">نظام <span class="gradient-text-gold">التقييم والنقاط</span></h2>
+                    <p class="text-gray-400 text-sm max-w-2xl mx-auto">كل نشاط بيساعدك تكسب نقاط — اتعلم، تنافس، واصعد في الترتيب</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="glow-card p-6 reveal reveal-d1">
+                        <h3 class="text-lg font-bold mb-5 flex items-center gap-2">
+                            <iconify-icon icon="lucide:award" class="text-gold-500 text-xl"></iconify-icon>
+                            نقاط الأنشطة
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center pb-3 border-b border-white/5">
+                                <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:presentation" class="text-gold-600"></iconify-icon>حضور الـ Workshop</span>
+                                <span class="text-gold-500 font-bold font-mono">15 نقطة</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-3 border-b border-white/5">
+                                <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:code-2" class="text-gold-600"></iconify-icon>حضور Practice</span>
+                                <span class="text-gold-500 font-bold font-mono">15 نقطة</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-3 border-b border-white/5">
+                                <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:help-circle" class="text-gold-600"></iconify-icon>كويز الجلسة</span>
+                                <span class="text-gold-500 font-bold font-mono">10 نقاط</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-3 border-b border-white/5">
+                                <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:file-code" class="text-gold-600"></iconify-icon>حل مسائل الجلسة</span>
+                                <span class="text-gold-500 font-bold font-mono">25 نقطة</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-3 border-b border-white/5">
+                                <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:swords" class="text-gold-600"></iconify-icon>التحدي الأسبوعي</span>
+                                <span class="text-gold-500 font-bold font-mono">50 نقطة</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:flag" class="text-gold-600"></iconify-icon>المشاركة في المسابقة</span>
+                                <span class="text-gold-500 font-bold font-mono">30 نقطة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glow-card p-6 reveal reveal-d2">
+                        <h3 class="text-lg font-bold mb-5 flex items-center gap-2">
+                            <iconify-icon icon="lucide:trophy" class="text-gold-500 text-xl"></iconify-icon>
+                            مكافآت الترتيب في المسابقة
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 p-4 rounded-xl bg-dark-800 border-r-2 border-gold-500">
+                                <div class="text-2xl">🥇</div>
+                                <div class="flex-1">
+                                    <div class="font-bold text-gold-500">المركز الأول</div>
+                                    <div class="text-xs text-gray-500">على المسابقة الأسبوعية</div>
+                                </div>
+                                <div class="text-xl font-black gradient-text-gold font-mono">+10</div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 rounded-xl bg-dark-800 border-r-2 border-gray-400">
+                                <div class="text-2xl">🥈</div>
+                                <div class="flex-1">
+                                    <div class="font-bold text-gray-400">المركز الثاني</div>
+                                    <div class="text-xs text-gray-500">على المسابقة الأسبوعية</div>
+                                </div>
+                                <div class="text-xl font-black text-gray-400 font-mono">+7</div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 rounded-xl bg-dark-800 border-r-2 border-amber-700">
+                                <div class="text-2xl">🥉</div>
+                                <div class="flex-1">
+                                    <div class="font-bold text-amber-700">المركز الثالث</div>
+                                    <div class="text-xs text-gray-500">على المسابقة الأسبوعية</div>
+                                </div>
+                                <div class="text-xl font-black text-amber-700 font-mono">+5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALLERY -->
+        <section id="gallery" class="py-20 sm:py-28 relative bg-dark-900/50">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Activities</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">معرض <span class="gradient-text-gold">الأنشطة</span></h2>
+                    <p class="text-gray-400 text-sm">لحظات من الورش والمسابقات والأنشطة المختلفة</p>
+                </div>
+
+                <div class="glow-card p-10 sm:p-16 text-center reveal">
+                    <div class="empty-float mb-5">
+                        <div class="w-20 h-20 mx-auto rounded-2xl bg-gold-500/5 border border-gold-500/10 flex items-center justify-center">
+                            <iconify-icon icon="lucide:image" class="text-gold-500/25 text-3xl"></iconify-icon>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">الصور قريباً</h3>
+                    <p class="text-sm text-gray-500 max-w-sm mx-auto">هنبدأ نرفع صور الأنشطة والورش والمسابقات مع بداية المعسكر — تابعونا</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESOURCES -->
+        <section id="resources" class="py-20 sm:py-28 relative">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Weekly Content</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">محتوى <span class="gradient-text-gold">كل أسبوع</span></h2>
+                    <p class="text-gray-400 text-sm max-w-2xl mx-auto">اضغط على أي أسبوع لعرض الموارد والتحديات والصور</p>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" id="resourceCards"></div>
+            </div>
+        </section>
+
+        <!-- UPCOMING EVENTS -->
+        <section id="events" class="py-20 sm:py-28 relative bg-dark-900/50">
+            <div class="section-divider mb-20"></div>
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14 reveal">
+                    <span class="text-xs font-semibold tracking-[.2em] uppercase text-gold-500 mb-3 block">Upcoming</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5">الجلسة <span class="gradient-text-gold">القادمة</span></h2>
+                </div>
+                <div class="glow-card p-6 sm:p-8 reveal">
+                    <div class="flex flex-col sm:flex-row gap-5">
+                        <div class="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-gold-500/10 to-gold-700/5 border border-gold-500/15 flex flex-col items-center justify-center">
+                            <div class="text-3xl font-black gradient-text-gold leading-none font-mono">01</div>
+                            <div class="text-[10px] text-gold-500 font-semibold mt-1">الأسبوع الأول</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-2 h-2 rounded-full bg-gold-500 badge-pulse"></span>
+                                <span class="text-[11px] text-gold-500 font-semibold">الجلسة الافتتاحية</span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold mb-3">Introduction to Programming &amp; Problem Solving</h3>
+                            <div class="flex flex-wrap gap-3 sm:gap-4 text-xs text-gray-500">
+                                <div class="flex items-center gap-1.5"><iconify-icon icon="lucide:calendar" class="text-gold-600"></iconify-icon>الثلاثاء — قريباً</div>
+                                <div class="flex items-center gap-1.5"><iconify-icon icon="lucide:clock" class="text-gold-600"></iconify-icon>12:00 PM</div>
+                                <div class="flex items-center gap-1.5"><iconify-icon icon="lucide:map-pin" class="text-gold-600"></iconify-icon>يتم التحديد</div>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5 mt-3">
+                                <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">C++ Basics</span>
+                                <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">I/O</span>
+                                <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">Conditions</span>
+                                <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">Loops</span>
+                                <span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">Live Coding</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="border-t border-white/5 py-14">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-4 gap-8 mb-10">
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-dark-950 font-bold text-sm font-mono">PS</div>
+                            <div>
+                                <div class="text-sm font-bold">Problem Solving Camp</div>
+                                <div class="text-[10px] text-gray-500">ICPC OTU Community — 2026</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold mb-3">روابط سريعة</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#about" class="text-xs text-gray-500 hover:text-gold-500 transition-colors">عن المعسكر</a></li>
+                            <li><a href="#roadmap" class="text-xs text-gray-500 hover:text-gold-500 transition-colors">المسار التعليمي</a></li>
+                            <li><a href="#leaderboard" class="text-xs text-gray-500 hover:text-gold-500 transition-colors">المتصدرين</a></li>
+                            <li><a href="#resources" class="text-xs text-gray-500 hover:text-gold-500 transition-colors">الموارد</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold mb-3">تواصل معنا</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-xs text-gray-500 hover:text-gold-500 transition-colors flex items-center gap-1.5"><iconify-icon icon="lucide:instagram"></iconify-icon>Instagram</a></li>
+                            <li><a href="#" class="text-xs text-gray-500 hover:text-gold-500 transition-colors flex items-center gap-1.5"><iconify-icon icon="lucide:facebook"></iconify-icon>Facebook</a></li>
+                            <li><a href="#" class="text-xs text-gray-500 hover:text-gold-500 transition-colors flex items-center gap-1.5"><iconify-icon icon="lucide:github"></iconify-icon>GitHub</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <p class="text-[10px] text-gray-600">© 2026 ICPC OTU Community</p>
+                    <p class="text-[10px] text-gray-600">Made with <span class="text-gold-500">♥</span> for the community</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- end mainPage -->
+
+    <!-- ==================== WEEK DETAIL PAGE ==================== -->
+    <div id="weekPage">
+        <div id="weekContent"></div>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="fixed bottom-5 left-5 z-50 w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center hover:bg-gold-500/20 transition-all" aria-label="أعلى">
+        <iconify-icon icon="lucide:chevron-up" class="text-gold-500"></iconify-icon>
+    </button>
+
+    <script>
+        // ===== DATA =====
+        const weeksData = [{
+            num: 1,
+            title: 'Introduction to Programming & Problem Solving',
+            titleAr: 'مقدمة في البرمجة وحل المشكلات',
+            topics: [
+                'What is Programming?',
+                'What is Problem Solving?',
+                'How Programmers Think',
+                'Problem Solving Strategy: Read → Analyze → Plan → Code → Test',
+                'Development Environment: VS Code, C++ Compiler',
+                'C++ Fundamentals: Variables, Data Types, Constants, Operators',
+                'Competitive Programming Setup: Codeforces, VJudge'
+            ],
+            practice: 'Beginner Problems — Level A-B-C',
+            challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
+        }, {
+            num: 2,
+            title: 'Decision Making & Repetition',
+            titleAr: 'اتخاذ القرارات والتكرار',
+            topics: [
+                'Conditions: if, else if, else, switch',
+                'Loops: for, while, do while',
+                'Functions: Definition, Parameters, Return Values, Recursion',
+                'Scope: Local vs Global Variables',
+                'Passing Parameters: Pass by Value, Pass by Reference',
+                'Basic Debugging: Error Messages, cout Debugging, Testing'
+            ],
+            practice: 'Conditions, Loops & Functions Practice',
+            challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
+        }, {
+            num: 3,
+            title: 'Arrays, Strings & Memory',
+            titleAr: 'المصفوفات والنصوص والذاكرة',
+            topics: [
+                'Arrays: Declaration, Traversal, Update, Linear Search',
+                'Strings: Length, Access, Compare, Basic Operations',
+                'Vector: Declaration, Push Back, Size, Traversal',
+                'Memory Basics: Variables in Memory, Address Operator, Pointers'
+            ],
+            practice: 'Array & String Problems',
+            challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
+        }, {
+            num: 4,
+            title: 'STL & Data Structures',
+            titleAr: 'المكتبة القياسية وهياكل البيانات',
+            topics: [
+                'Data Structures: Array, Vector, Stack, Queue, Set, Map, etc.',
+                'STL Containers: Vector, Pair, Stack, Queue, Set, Map',
+                'STL Algorithms: sort, reverse, min_element, max_element, binary_search',
+                'Choosing the Right Data Structure'
+            ],
+            practice: 'STL Problems & Data Structure Contest',
+            challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
+        }, {
+            num: 5,
+            title: 'Problem Solving Techniques',
+            titleAr: 'تقنيات حل المشكلات',
+            topics: [
+                'Complexity Analysis: Big O Notation, O(1), O(log n), O(n), O(n²)',
+                'Binary Search: When to Use, Implementation',
+                'Prefix Sum',
+                'Two Pointers',
+                'Tree Introduction: Nodes, Root, Parent, Leaf, Binary Tree'
+            ],
+            practice: 'Binary Search & Two Pointers Problems',
+            challenge: ['Problem A — قريباً', 'Problem B — قريباً', 'Problem C — قريباً']
+        }];
+
+        // ===== RENDER ROADMAP =====
+        const roadmapCards = document.getElementById('roadmapCards');
+        const resourceCards = document.getElementById('resourceCards');
+
+        weeksData.forEach((week, index) => {
+            // Roadmap Accordion
+            const card = document.createElement('div');
+            card.className = 'glow-card overflow-hidden reveal';
+            card.style.transitionDelay = `${index * 0.1}s`;
+            card.innerHTML = `
+                    <button class="w-full p-5 sm:p-6 flex items-center gap-4 text-right" onclick="toggleAccordion(${index})">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gold-500/5 border border-gold-500/10 flex items-center justify-center flex-shrink-0">
+                            <span class="text-xl sm:text-2xl font-black gradient-text-gold font-mono">${week.num}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[10px] text-gold-500 font-mono font-bold mb-1">WEEK ${week.num}</div>
+                            <h3 class="font-bold text-sm sm:text-lg truncate">${week.titleAr}</h3>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="accordion-icon text-gold-500 text-xl transition-transform" id="acc-icon-${index}"></iconify-icon>
+                    </button>
+                    <div class="accordion-content" id="acc-content-${index}">
+                        <div class="p-5 sm:p-6 pt-0 border-t border-white/5 mt-2">
+                            <div class="grid sm:grid-cols-2 gap-4 mt-4">
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-400 mb-2 flex items-center gap-1.5"><iconify-icon icon="lucide:book-open" class="text-gold-500"></iconify-icon>المواضيع</h4>
+                                    <ul class="space-y-1.5">
+                                        ${week.topics.map(t => `<li class="text-xs text-gray-400 flex items-center gap-2"><span class="w-1 h-1 bg-gold-500 rounded-full"></span>${t}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-400 mb-2 flex items-center gap-1.5"><iconify-icon icon="lucide:code" class="text-gold-500"></iconify-icon>الممارسة</h4>
+                                    <p class="text-xs text-gray-400 mb-3">${week.practice}</p>
+                                    <h4 class="text-xs font-bold text-gray-400 mb-2 flex items-center gap-1.5"><iconify-icon icon="lucide:swords" class="text-gold-500"></iconify-icon>التحدي</h4>
+                                    <ul class="space-y-1.5">
+                                        ${week.challenge.map(c => `<li class="text-xs text-gray-400 flex items-center gap-2"><span class="w-1 h-1 bg-gold-500 rounded-full"></span>${c}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            roadmapCards.appendChild(card);
+
+            // Resource Card
+            const resCard = document.createElement('div');
+            resCard.className = 'glow-card p-6 cursor-pointer group reveal';
+            resCard.style.transitionDelay = `${index * 0.1}s`;
+            resCard.onclick = () => showWeek(week.num);
+            resCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-gold-500/10 flex items-center justify-center">
+                            <span class="text-lg font-black gradient-text-gold font-mono">${week.num}</span>
+                        </div>
+                        <iconify-icon icon="lucide:arrow-left-circle" class="text-gray-600 group-hover:text-gold-500 transition-colors text-xl resource-icon"></iconify-icon>
+                    </div>
+                    <div class="text-[10px] text-gold-500 font-mono font-bold mb-1">WEEK ${week.num}</div>
+                    <h3 class="font-bold text-sm sm:text-base mb-3">${week.titleAr}</h3>
+                    <div class="flex flex-wrap gap-1.5">
+                        ${week.topics.slice(0, 3).map(t => `<span class="px-2 py-0.5 rounded-full bg-white/5 text-[10px] text-gray-400">${t.split(' ')[0]}</span>`).join('')}
+                    </div>
+                `;
+            resourceCards.appendChild(resCard);
+        });
+
+        function toggleAccordion(index) {
+            const content = document.getElementById(`acc-content-${index}`);
+            const icon = document.getElementById(`acc-icon-${index}`);
+            content.classList.toggle('open');
+            icon.classList.toggle('rotated');
         }
-    });
-}, { threshold: 0.1 });
 
-revealEls.forEach(el => observer.observe(el));
+        // ===== WEEK PAGE =====
+        function showWeek(weekNum) {
+            const week = weeksData.find(w => w.num === weekNum);
+            const weekContent = document.getElementById('weekContent');
 
-// ===== TYPING EFFECT =====
-const phrases = ['الإبداع', 'الاحتراف', 'ECPC'];
-const typingText = document.getElementById('typingText');
-let phraseIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
+            weekContent.innerHTML = `
+                    <div class="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+                        <div class="max-w-4xl mx-auto">
+                            <button onclick="showMain()" class="mb-6 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gold-500 transition-colors">
+                                <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                                العودة للرئيسية
+                            </button>
 
-function typeEffect() {
-    const currentPhrase = phrases[phraseIndex];
-    
-    if (isDeleting) {
-        typingText.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
-    } else {
-        typingText.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
-    }
-    
-    let typeSpeed = isDeleting ? 50 : 100;
-    
-    if (!isDeleting && charIndex === currentPhrase.length) {
-        typeSpeed = 2000;
-        isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-        typeSpeed = 500;
-    }
-    
-    setTimeout(typeEffect, typeSpeed);
-}
+                            <div class="glow-card p-6 sm:p-10 mb-6">
+                                <div class="flex items-center gap-4 mb-6">
+                                    <div class="w-16 h-16 rounded-2xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
+                                        <span class="text-2xl font-black gradient-text-gold font-mono">${week.num}</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gold-500 font-mono font-bold mb-1">WEEK ${week.num}</div>
+                                        <h1 class="text-2xl sm:text-3xl font-black">${week.titleAr}</h1>
+                                    </div>
+                                </div>
+                                <div class="grid sm:grid-cols-2 gap-6">
+                                    <div class="bg-dark-800 rounded-xl p-5">
+                                        <h3 class="text-sm font-bold mb-3 flex items-center gap-2"><iconify-icon icon="lucide:book-open" class="text-gold-500"></iconify-icon>المواضيع</h3>
+                                        <ul class="space-y-2">
+                                            ${week.topics.map(t => `<li class="text-sm text-gray-400 flex items-center gap-2"><span class="w-1.5 h-1.5 bg-gold-500 rounded-full"></span>${t}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                    <div class="bg-dark-800 rounded-xl p-5">
+                                        <h3 class="text-sm font-bold mb-3 flex items-center gap-2"><iconify-icon icon="lucide:code" class="text-gold-500"></iconify-icon>الممارسة والتحدي</h3>
+                                        <p class="text-sm text-gray-400 mb-4">${week.practice}</p>
+                                        <h4 class="text-xs font-bold text-gray-500 mb-2">التحديات:</h4>
+                                        <ul class="space-y-2">
+                                            ${week.challenge.map(c => `<li class="text-sm text-gray-400 flex items-center gap-2"><iconify-icon icon="lucide:swords" class="text-gold-500 text-xs"></iconify-icon>${c}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
 
-typeEffect();
+            document.getElementById('mainPage').classList.add('hidden-page');
+            document.getElementById('weekPage').classList.add('active');
+            window.scrollTo(0, 0);
+        }
 
-// ===== STAT COUNTER =====
-const statNumbers = document.querySelectorAll('.stat-number');
-const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const target = parseInt(entry.target.dataset.target);
-            let current = 0;
-            const increment = target / 30;
-            const update = () => {
-                if (current < target) {
-                    current += increment;
-                    entry.target.textContent = Math.ceil(current);
-                    requestAnimationFrame(update);
-                } else {
-                    entry.target.textContent = target;
+        function showMain() {
+            document.getElementById('mainPage').classList.remove('hidden-page');
+            document.getElementById('weekPage').classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+
+        // ===== NAVBAR & SCROLL =====
+        const navbar = document.getElementById('navbar');
+        const progressBar = document.getElementById('progressBar');
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+
+            if (scrolled > 50) {
+                navbar.classList.add('bg-dark-950/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
+            } else {
+                navbar.classList.remove('bg-dark-950/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
+            }
+
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrolled / height) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            if (scrolled > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== MOBILE MENU =====
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                mobileMenu.classList.remove('open');
+            });
+        });
+
+        // ===== REVEAL ON SCROLL =====
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
                 }
-            };
-            update();
-            statObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.1 });
+
+        revealEls.forEach(el => observer.observe(el));
+
+        // ===== TYPING EFFECT =====
+        const phrases = ['الإبداع', 'الاحتراف', 'ECPC'];
+        const typingText = document.getElementById('typingText');
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeEffect() {
+            const currentPhrase = phrases[phraseIndex];
+
+            if (isDeleting) {
+                typingText.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(typeEffect, typeSpeed);
         }
-    });
-}, { threshold: 0.5 });
 
-statNumbers.forEach(el => statObserver.observe(el));
+        typeEffect();
 
-// ===== MATRIX BACKGROUND =====
-const canvas = document.getElementById('matrixCanvas');
-const ctx = canvas.getContext('2d');
+        // ===== STAT COUNTER =====
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.dataset.target);
+                    let current = 0;
+                    const increment = target / 30;
+                    const update = () => {
+                        if (current < target) {
+                            current += increment;
+                            entry.target.textContent = Math.ceil(current);
+                            requestAnimationFrame(update);
+                        } else {
+                            entry.target.textContent = target;
+                        }
+                    };
+                    update();
+                    statObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = canvas.parentElement.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+        statNumbers.forEach(el => statObserver.observe(el));
 
-const chars = '01';
-const fontSize = 14;
-let columns = Math.floor(canvas.width / fontSize);
-let drops = Array(columns).fill(1);
+        // ===== MATRIX BACKGROUND =====
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
 
-function drawMatrix() {
-    ctx.fillStyle = 'rgba(5, 5, 10, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.fillStyle = '#EAB308';
-    ctx.font = `${fontSize}px JetBrains Mono`;
-    
-    for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
         }
-        drops[i]++;
-    }
-}
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-setInterval(drawMatrix, 50);
+        const chars = '01';
+        const fontSize = 14;
+        let columns = Math.floor(canvas.width / fontSize);
+        let drops = Array(columns).fill(1);
 
-// ===== ACTIVE NAV LINK =====
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        if (window.pageYOffset >= sectionTop) {
-            current = section.getAttribute('id');
+            ctx.fillStyle = '#EAB308';
+            ctx.font = `${fontSize}px JetBrains Mono`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
         }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-});
-</script>
+
+        setInterval(drawMatrix, 50);
+
+        // ===== ACTIVE NAV LINK =====
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
